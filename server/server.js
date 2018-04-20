@@ -2,6 +2,7 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var validator = require('validator')
 var shortid = require('shortid')
+var {mongoose} = require('./db/mongoose')
 
 var app = express()
 var port = process.env.PORT || 3000
@@ -9,6 +10,11 @@ var {URLs} = require('../models/urls')
 
 app.use(bodyParser.urlencoded({ extended: true }))
 // post link to shorten
+app.get('/', (req, res) => {
+  res.send(`Example creation usage: \n
+  ${req.headers.host}/https://www.google.com \n
+  ${req.headers.host}/http://foo.com:80`)
+})
 app.get('/*', async (req, res) => {
   var url = req.params[0]
   const doc = await URLs.findOne({
